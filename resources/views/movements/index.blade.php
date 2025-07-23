@@ -6,6 +6,9 @@
         <h3 class="text-primary">Liste des Mouvements d'Affectation</h3>
         <a href="{{ route('mouvements.create') }}" class="btn btn-outline-primary">Ajouter Mouvement</a>
     </div>
+    <a href="{{ route('affectations.historique') }}" class="btn btn-outline-dark">
+        Voir l'historique complet
+    </a>
 
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>

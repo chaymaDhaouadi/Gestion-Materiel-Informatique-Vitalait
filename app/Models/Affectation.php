@@ -15,6 +15,8 @@ class Affectation extends Model
         'date_affectation',
         'quantite',
         'description',
+        'active' // 👈 ajouté ici
+
     ];
 
     public function employe()

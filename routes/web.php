@@ -118,6 +118,7 @@ Route::get('/articles/{id}/stock-items', [ArticleController::class, 'getStockIte
 Route::get('/affectations/create', [AffectationController::class, 'create'])->name('affectations.create');
 Route::post('/affectations', [AffectationController::class, 'store'])->name('affectations.store');
 Route::get('/affectations', [AffectationController::class, 'index'])->name('affectations.index');
+Route::get('/affectations/historique', [AffectationController::class, 'historique'])->name('affectations.historique');
 
 /* ────────────────  Déconnexion  ──────────────── */
 Route::post('/logout', function (\Illuminate\Http\Request $request) {

@@ -86,7 +86,44 @@ class AffectationController extends Controller
     }
     public function index()
     {
-        $affectations = Affectation::with(['employe', 'article', 'stockItem'])->latest()->get();
+        $affectations = Affectation::where('active', true)
+            ->with(['employe', 'article', 'stockItem'])
+            ->latest()
+            ->get();
+
         return view('affectations.index', compact('affectations'));
+    }
+
+    public function edit(Affectation $affectation)
+    {
+        $employes = \App\Models\Employe::all();
+        return view('affectations.edit', compact('affectation', 'employes'));
+    }
+    public function update(Request $request, Affectation $affectation)
+    {
+        $request->validate([
+            'employe_id' => 'required|exists:employes,id',
+        ]);
+
+        // Désactiver l'ancienne affectation
+        $affectation->update(['active' => false]);
+
+        // Créer une nouvelle affectation pour le nouveau employé
+        Affectation::create([
+            'employe_id' => $request->employe_id,
+            'article_id' => $affectation->article_id,
+            'stock_item_id' => $affectation->stock_item_id,
+            'date_affectation' => now(), // ou date actuelle
+            'quantite' => 1,
+            'description' => 'Modification d\'affectation',
+            'active' => true,
+        ]);
+
+        return redirect()->route('affectations.index')->with('success', 'Affectation modifiée avec succès.');
+    }
+    public function historique()
+    {
+        $affectations = Affectation::with(['employe', 'article', 'stockItem'])->latest()->get();
+        return view('affectations.historique', compact('affectations'));
     }
 }
