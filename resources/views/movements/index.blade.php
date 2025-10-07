@@ -3,12 +3,11 @@
 @section('content')
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-primary">Liste des Mouvements d'Affectation</h3>
-        <a href="{{ route('mouvements.create') }}" class="btn btn-outline-primary">Ajouter Mouvement</a>
+        <h3 class="text-primary">Liste des Affectations</h3>
+        <a href="{{ route('affectations.create') }}" class="btn btn-outline-primary">Nouvelle Affectation</a>
     </div>
-    <a href="{{ route('affectations.historique') }}" class="btn btn-outline-dark">
-        Voir l'historique complet
-    </a>
+
+    <a href="{{ route('affectations.historique') }}" class="btn btn-outline-dark mb-3">Voir l'historique complet</a>
 
     @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -16,42 +15,51 @@
 
     <div class="card shadow-sm">
         <div class="card-body table-responsive">
-            <table class="table table-hover">
-                <thead class="table-light">
+            <table class="table table-hover align-middle">
+                <thead>
                     <tr>
-                        <th>#</th>
                         <th>Article</th>
-                        <th>Destination</th>
-                        <th>Date</th>
-                        <th>Quantité</th>
+                        <th>Employé</th>
+                        <th>N° Série</th>
+                        <th>Date Affectation</th>
+                        <th>Statut</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($mouvements as $mouvement)
+                    @forelse($affectations as $aff)
                     <tr>
-                        <td>{{ $mouvement->id }}</td>
-                        <td>{{ $mouvement->article->nom }}</td>
-                        <td>{{ $mouvement->destination }}</td>
-                        <td>{{ $mouvement->date_affectation }}</td>
-                        <td>{{ $mouvement->quantite }}</td>
+                        <td>{{ $aff->article->nom }}</td>
+                        <td>{{ $aff->employe->nom_complet }}</td>
+                        <td>{{ $aff->stockItem->numero_serie ?? '-' }}</td>
+                        <td>{{ \Carbon\Carbon::parse($aff->date_affectation)->format('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ route('mouvements.show', $mouvement) }}" class="btn btn-sm btn-info">Voir</a>
-                            <a href="{{ route('mouvements.edit', $mouvement) }}" class="btn btn-sm btn-warning">Modifier</a>
-                            <form action="{{ route('mouvements.destroy', $mouvement) }}" method="POST" class="d-inline" onsubmit="return confirm('Confirmer la suppression ?')">
+                            <span class="badge bg-{{ $aff->active ? 'success' : 'secondary' }}">
+                                {{ $aff->active ? 'Active' : 'Historique' }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('affectations.edit', $aff->id) }}" class="btn btn-sm btn-warning">Modifier</a>
+
+                            <form action="{{ route('affectations.destroy', $aff->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette affectation ?')">
+                                    Supprimer
+                                </button>
                             </form>
+
+                            <a href="{{ route('affectations.show', $aff->id) }}" class="btn btn-sm btn-info">Consulter</a>
                         </td>
                     </tr>
-                    @endforeach
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center">Aucune affectation trouvée.</td>
+                    </tr>
+                    @endforelse
                 </tbody>
             </table>
-
-            <div class="d-flex justify-content-center">
-                {!! $mouvements->links() !!}
-            </div>
         </div>
     </div>
 </div>

@@ -86,13 +86,13 @@ class AffectationController extends Controller
     }
     public function index()
     {
-        $affectations = Affectation::where('active', true)
-            ->with(['employe', 'article', 'stockItem'])
-            ->latest()
+        $affectations = Affectation::with(['employe', 'article', 'stockItem'])
+            ->orderByDesc('created_at')
             ->get();
 
         return view('affectations.index', compact('affectations'));
     }
+
 
     public function edit(Affectation $affectation)
     {
@@ -125,5 +125,27 @@ class AffectationController extends Controller
     {
         $affectations = Affectation::with(['employe', 'article', 'stockItem'])->latest()->get();
         return view('affectations.historique', compact('affectations'));
+    }
+    public function show(Affectation $affectation)
+    {
+        $historiqueArticle = Affectation::with(['employe', 'stockItem'])
+            ->where('article_id', $affectation->article_id)
+            ->where('id', '!=', $affectation->id)
+            ->latest()
+            ->get();
+
+        $historiqueEmploye = Affectation::with(['article', 'stockItem'])
+            ->where('employe_id', $affectation->employe_id)
+            ->where('id', '!=', $affectation->id)
+            ->latest()
+            ->get();
+
+        return view('affectations.show', compact('affectation', 'historiqueArticle', 'historiqueEmploye'));
+    }
+
+    public function destroy(Affectation $affectation)
+    {
+        $affectation->delete();
+        return redirect()->route('affectations.index')->with('success', 'Affectation supprimée avec succès.');
     }
 }

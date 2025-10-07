@@ -17,15 +17,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <!-- DataTables -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- Font Awesome (facultatif) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @vite (['resources/js/app.js'])
 
-    <!-- Vite assets (si tu en as) -->
-    @vite(['resources/js/app.js'])
 
     <!-- 🌈 Couleurs Vitalait en CSS pur -->
     <style>
@@ -59,6 +59,8 @@
             color: #fff;
         }
     </style>
+    @livewireStyles
+
 </head>
 
 <body>
@@ -102,6 +104,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('affectations.index') }}">Affectations</a>
+                        </li>
+
 
                         <!-- Profil / Logout -->
                         <li class="nav-item dropdown">
@@ -139,10 +145,20 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Bootstrap JS -->
     @yield('scripts')
 
     @stack('scripts') {{-- scripts injectés depuis les vues --}}
+    @livewireScripts
+    <footer class="bg-dark text-white text-center text-lg-start border-top mt-4">
+        <div class="text-center p-3">
+            © {{ date('Y') }} Vitalait - Tous droits réservés.
+            <span class="ms-2">Développé par <strong>Chayma Dhaouadi</strong> 💻</span>
+        </div>
+    </footer>
+
 </body>
 
 </html>

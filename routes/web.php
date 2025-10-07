@@ -9,10 +9,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StockItemController;
 use App\Http\Controllers\MovementController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Livewire\DashboardStats;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\AffectationController;
 use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\DashboardController;
 
 /* Zone admin */
 use App\Http\Controllers\Admin\HomeController;
@@ -46,9 +47,10 @@ Route::middleware('auth')->group(function () {
     });
 
     /* Tableau de bord */
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('auth')
-        ->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboard');
+
 
     /* (Sous‑)routes Admin / Utilisateurs en attente  */
     Route::prefix('admin')->group(function () {
@@ -119,6 +121,10 @@ Route::get('/affectations/create', [AffectationController::class, 'create'])->na
 Route::post('/affectations', [AffectationController::class, 'store'])->name('affectations.store');
 Route::get('/affectations', [AffectationController::class, 'index'])->name('affectations.index');
 Route::get('/affectations/historique', [AffectationController::class, 'historique'])->name('affectations.historique');
+Route::get('/affectations/{affectation}/edit', [AffectationController::class, 'edit'])->name('affectations.edit');
+Route::put('/affectations/{affectation}', [AffectationController::class, 'update'])->name('affectations.update');
+Route::delete('/affectations/{affectation}', [AffectationController::class, 'destroy'])->name('affectations.destroy');
+Route::get('/affectations/{affectation}', [AffectationController::class, 'show'])->name('affectations.show');
 
 /* ────────────────  Déconnexion  ──────────────── */
 Route::post('/logout', function (\Illuminate\Http\Request $request) {

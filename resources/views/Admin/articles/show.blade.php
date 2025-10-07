@@ -155,4 +155,5 @@
         <i class="bi bi-arrow-left"></i> Retour à la liste
     </a>
 </div>
+
 @endsection

@@ -10,7 +10,8 @@
         "laravel/tinker": "^2.10.1",
         "laravel/fortify": "^2.0@dev",
         "spatie/laravel-permission": "^6.15",
-        "doctrine/dbal": "*"
+        "doctrine/dbal": "*",
+        "livewire/livewire": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
